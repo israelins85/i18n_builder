@@ -9,6 +9,6 @@ builders:
         target: ":i18n_builder"
         import: "package:i18n_builder/i18n_builder.dart"
         builder_factories: ["i18nBuilder"]
-        build_extensions: { "$lib$": ["i18n_generated.json"] }
+        build_extensions: {} # No file outputs
         auto_apply: root_package
         build_to: source

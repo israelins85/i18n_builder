@@ -18,20 +18,19 @@ class I18nBuilder implements Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        r'$lib$': ['i18n_generated.json']
+        '.dart': ['.i18n_dummy'] // cada .dart tem seu dummy file
       };
 
   @override
   Future<void> build(BuildStep buildStep) async {
     final baseLocale = options.config['base_locale'] as String? ?? 'en-US';
-    final libDir = Directory('lib');
     final translationsDir = Directory(
         options.config['translations_dir'] as String? ?? 'assets/translations');
 
     log.info('🔍 Building i18n files...');
 
     // Colete as chaves i18n
-    final i18nKeys = _getI18nKeysInDirectory(libDir);
+    final i18nKeys = await _getI18nKeysFromAsset(buildStep);
 
     // Atualize os arquivos de tradução
     final files = translationsDir
@@ -43,6 +42,21 @@ class I18nBuilder implements Builder {
       final locale = file.uri.pathSegments.last.split('.').first;
       _addI18nKeysToFile(file, i18nKeys, locale, baseLocale);
     }
+
+    // Gere o arquivo .i18n_builder_last_update.json
+    // final gitignoreFile = File('.gitignore');
+    final dummyId = buildStep.inputId.changeExtension('.i18n_dummy');
+    await buildStep.writeAsString(
+        dummyId, '{"timestamp":"${DateTime.now().toIso8601String()}"}');
+
+    // if (gitignoreFile.existsSync()) {
+    //   final content = gitignoreFile.readAsStringSync();
+    //   if (!content.contains(dummyId.path)) {
+    //     log.info('🔧 Updating the .gitignore file...');
+    //     gitignoreFile.writeAsStringSync('\n # i18n_builder\n${dummyId.path}',
+    //         mode: FileMode.append);
+    //   }
+    // }
   }
 
   bool _hasUnescapedDollar(String str) {
@@ -76,22 +90,37 @@ class I18nBuilder implements Builder {
         .toSet();
   }
 
-  Set<String> _getI18nKeysFromFile(File file) {
-    final content = file.readAsStringSync();
-    return _getI18nKeys(content);
-  }
+  Future<Set<String>> _getI18nKeysFromAsset(BuildStep buildStep) async {
+    final id = buildStep.inputId;
 
-  Set<String> _getI18nKeysInDirectory(Directory dir) {
-    final keys = <String>{};
-    for (final entity in dir.listSync(recursive: true)) {
-      if (entity is File &&
-          entity.path.endsWith('.dart') &&
-          !entity.path.contains('.g.dart') &&
-          !entity.path.contains('.freezed.dart')) {
-        keys.addAll(_getI18nKeysFromFile(entity));
-      }
+    // Ignora este arquivo
+    if (id.path.endsWith('i18n_builder.dart')) return <String>{};
+
+    // Ignora arquivos que não sejam Dart
+    if (!id.path.endsWith('.dart')) return <String>{};
+
+    // Ignora arquivos gerados
+    if (id.path.contains('.g.dart') || id.path.contains('.freezed.dart')) {
+      return <String>{};
     }
-    return keys.toSet();
+
+    // Ignora arquivos de teste
+    if (id.path.contains('/test/') || id.path.endsWith('_test.dart')) {
+      return <String>{};
+    }
+
+    // Ignora arquivos temporários de IDEs ou builds
+    if (id.path.contains('.dart_tool/') || id.path.contains('build/')) {
+      return <String>{};
+    }
+
+    // Ignora arquivos de exemplo ou dev-only
+    if (id.path.contains('/example/') || id.path.contains('/dev/')) {
+      return <String>{};
+    }
+
+    final content = await buildStep.readAsString(id);
+    return _getI18nKeys(content);
   }
 
   void _addI18nKeysToFile(
@@ -128,18 +157,20 @@ class I18nBuilder implements Builder {
       }
     }
 
+    // TODO: can't to this now, because can remove valid keys
+    // keys that are not in the current locale will be removed
     // Remove obsolete keys
-    for (final key in currentKeys) {
-      if (key == '@@locale') continue;
-      if (keys.contains(key)) continue;
-      // Ignore nested keys without spaces and well-formed (e.g., auth.error)
-      final isLikelyStructuredKey =
-          !key.contains(' ') && key.contains('.') && !key.endsWith('.');
-      if (isLikelyStructuredKey) continue;
-      log.info('❌ [$locale] removing obsolete key "$key".');
-      translations.remove(key);
-      updated = true;
-    }
+    // for (final key in currentKeys) {
+    //   if (key == '@@locale') continue;
+    //   if (keys.contains(key)) continue;
+    //   // Ignore nested keys without spaces and well-formed (e.g., auth.error)
+    //   final isLikelyStructuredKey =
+    //       !key.contains(' ') && key.contains('.') && !key.endsWith('.');
+    //   if (isLikelyStructuredKey) continue;
+    //   log.info('❌ [$locale] removing obsolete key "$key".');
+    //   translations.remove(key);
+    //   updated = true;
+    // }
 
     if (updated) {
       final ordered = SplayTreeMap<String, dynamic>.from(

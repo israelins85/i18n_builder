@@ -40,9 +40,8 @@ Set<String> getI18nKeysFromFileContent(String content) {
 
 bool ignoreFile(String path) {
   // Ignora arquivos da lib
-  if (path.endsWith('i18n_builder/lib/i18n_builder.dart')) return true;
-  if (path.endsWith('i18n_builder/lib/i18n_cleanup_builder.dart')) return true;
-  if (path.endsWith('i18n_builder/lib/src/functions.dart')) return true;
+  if (path.endsWith('lib/i18n_builder.dart')) return true;
+  if (path.endsWith('lib/i18n_cleanup_builder.dart')) return true;
 
   // Ignora arquivos que não sejam Dart
   if (!path.endsWith('.dart')) return true;

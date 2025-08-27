@@ -27,4 +27,9 @@ builders:
         enabled: true
         base_locale: en-US # default
         translations_dir: assets/translations # default
+        key_is_base_text: true # default - if true, the key will be set to the base locale text
 ```
+
+## Suggestions
+
+-   You can use the [BabelEdit](https://www.codeandweb.com/babeledit) to make easy translate your files.

@@ -1,0 +1,26 @@
+name: example
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+    sdk: ^3.9.0
+
+dependencies:
+    flutter:
+        sdk: flutter
+    i18n_extension: ^15.0.5
+
+dev_dependencies:
+    flutter_test:
+        sdk: flutter
+    flutter_lints: ^5.0.0
+    build_runner: ^2.7.0
+    i18n_builder:
+
+flutter:
+    uses-material-design: true
+
+dependency_overrides:
+    i18n_builder:
+        path: ../../i18n_builder

@@ -21,7 +21,7 @@ class I18nBuilder implements Builder {
     final baseLocale = options.config['base_locale'] as String? ?? 'en-US';
     final translationsDir = Directory(
         options.config['translations_dir'] as String? ?? 'assets/translations');
-    final keyIsBaseText = options.config['key_is_base_text'] as bool? ?? false;
+    final keyIsBaseText = options.config['key_is_base_text'] as bool? ?? true;
 
     if (ignoreFile(buildStep.inputId.path)) return;
 

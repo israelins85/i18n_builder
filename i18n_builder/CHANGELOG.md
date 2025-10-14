@@ -17,3 +17,7 @@
 ## 1.0.4
 
 -   Adding key_is_base_text option and starting with i18n_cleanup_builder
+
+## 1.0.5
+
+-   Updating dependencies

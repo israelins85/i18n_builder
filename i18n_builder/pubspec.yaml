@@ -1,15 +1,15 @@
 name: i18n_builder
 description: A builder to automatically update i18n translation files for Flutter projects
-version: 1.0.4
+version: 1.0.5
 homepage: https://github.com/israelins85/i18n_builder
 repository: https://github.com/israelins85/i18n_builder
 
 environment:
-    sdk: ">=3.0.0 <4.0.0"
+    sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-    build: ^3.0.2
-    source_gen: ^3.1.0
+    build: ^4.0.2
+    source_gen: ^4.0.2
     path: ^1.9.1
 
 dev_dependencies:

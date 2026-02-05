@@ -16,7 +16,7 @@ A Dart builder that automatically updates i18n translation files.
 
 ```yaml
 dev_dependencies:
-    i18n_builder: ^1.1.0
+    i18n_builder: ^1.1.1
 ```
 
 2. (Optional) Add to your `build.yaml` or create a `i18n_builder.yaml` file:

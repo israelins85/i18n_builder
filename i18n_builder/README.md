@@ -4,11 +4,11 @@ A Dart builder that automatically updates i18n translation files.
 
 ## Features
 
--   Automatically detects .i18n keys in your Dart files
--   Updates translation JSON files
--   Maintains existing translations
--   Removes obsolete keys
--   based on format of translations in [i18n_extension](https://pub.dev/packages/i18n_extension)
+- Automatically detects .i18n keys in your Dart files
+- Updates translation JSON files
+- Maintains existing translations
+- Removes obsolete keys
+- based on format of translations in [i18n_extension](https://pub.dev/packages/i18n_extension)
 
 ## Usage
 
@@ -16,7 +16,7 @@ A Dart builder that automatically updates i18n translation files.
 
 ```yaml
 dev_dependencies:
-    i18n_builder: ^1.0.0
+    i18n_builder: ^1.1.0
 ```
 
 2. (Optional) Add to your `build.yaml` or create a `i18n_builder.yaml` file:
@@ -32,4 +32,4 @@ builders:
 
 ## Suggestions
 
--   You can use the [BabelEdit](https://www.codeandweb.com/babeledit) to make easy translate your files.
+- You can use the [BabelEdit](https://www.codeandweb.com/babeledit) to make easy translate your files.

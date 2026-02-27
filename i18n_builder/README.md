@@ -33,3 +33,17 @@ builders:
 ## Suggestions
 
 - You can use the [BabelEdit](https://www.codeandweb.com/babeledit) to make easy translate your files.
+
+## To run standalone
+
+```bash
+Usage: dart run bin/i18n_standalone.dart <source_dir> <translations_dir> [options]
+Options:
+  --base-locale <locale>     Base locale (default: en)
+  --key-is-base-text    Use key as base text (default: false)
+  --remove-obsolete     Remove obsolete keys (default: false)
+```
+
+## License
+
+MIT

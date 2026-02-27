@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:build/build.dart';
@@ -13,14 +12,15 @@ class I18nBuilder implements Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '.dart': ['.i18n_builder.json'] // cada .dart tem seu dummy file
-      };
+    '.dart': ['.i18n_builder.json'], // cada .dart tem seu dummy file
+  };
 
   @override
   Future<void> build(BuildStep buildStep) async {
-    final baseLocale = options.config['base_locale'] as String? ?? 'en-US';
+    final baseLocale = options.config['base_locale'] as String? ?? 'en';
     final translationsDir = Directory(
-        options.config['translations_dir'] as String? ?? 'assets/translations');
+      options.config['translations_dir'] as String? ?? 'assets/translations',
+    );
     final keyIsBaseText = options.config['key_is_base_text'] as bool? ?? true;
 
     if (ignoreFile(buildStep.inputId.path)) return;
@@ -28,28 +28,18 @@ class I18nBuilder implements Builder {
     log.info('🔍 Searching for i18n keys in ${buildStep.inputId.path}...');
 
     // Colete as chaves i18n
-    final i18nKeys = await getI18nKeysFromAsset(buildStep);
+    final content = await buildStep.readAsString(buildStep.inputId);
 
-    // Atualize os arquivos de tradução
-    final files = translationsDir
-        .listSync()
-        .whereType<File>()
-        .where((f) => f.path.endsWith('.json'));
-
-    for (final file in files) {
-      final locale = file.uri.pathSegments.last.split('.').first;
-      addI18nKeysToFile(
-        file,
-        i18nKeys,
-        locale: locale,
-        baseLocale: baseLocale,
-        keyIsBaseText: keyIsBaseText,
-      );
-    }
+    addI18nKeysFromFileContent(
+      content,
+      translationsDir: translationsDir,
+      baseLocale: baseLocale,
+      keyIsBaseText: keyIsBaseText,
+    );
 
     // criar um arquivo .i18n_builder.json para o cleanup rodar
     final outputId = buildStep.allowedOutputs.first;
     log.info('🔧 Writing ${outputId.path}...');
-    await buildStep.writeAsString(outputId, jsonEncode(i18nKeys.toList()));
+    await buildStep.writeAsString(outputId, content);
   }
 }

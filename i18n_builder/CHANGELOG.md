@@ -1,3 +1,10 @@
+## 1.1.2
+
+- Adding possibility to run standalone to update translations
+- Adding possibility to remove obsolete keys (from standalone)
+- Fixing bug with base_locale
+- Updating dependencies
+
 ## 1.1.1
 
 - Updating dependencies

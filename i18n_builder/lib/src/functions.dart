@@ -196,7 +196,8 @@ void addI18nKeysToFile(
       );
     }
 
-    if (locale.startsWith(baseLocale) && keyIsBaseText) {
+    if ((locale.startsWith(baseLocale) || baseLocale.startsWith(locale)) &&
+        keyIsBaseText) {
       if (currentKeys.contains(key)) {
         if (translations[key] == key) continue;
         log.info('✅ [$locale] updating key "$key".');

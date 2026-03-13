@@ -79,7 +79,9 @@ void persistI18nKeys(File file, Map<String, dynamic> translations) {
   final ordered = SplayTreeMap<String, dynamic>.from(translations, (a, b) {
     if (a == '@@locale') return -1;
     if (b == '@@locale') return 1;
-    return a.toLowerCase().compareTo(b.toLowerCase());
+    final lowerCaseCompare = a.toLowerCase().compareTo(b.toLowerCase());
+    if (lowerCaseCompare != 0) return lowerCaseCompare;
+    return a.compareTo(b);
   });
   final newContent = const JsonEncoder.withIndent('    ').convert(ordered);
   file.writeAsStringSync(newContent);

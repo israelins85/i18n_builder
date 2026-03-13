@@ -16,7 +16,7 @@ A Dart builder that automatically updates i18n translation files.
 
 ```yaml
 dev_dependencies:
-    i18n_builder: ^1.0.0
+    i18n_builder: ^1.1.3
 ```
 
 2. (Optional) Add to your `build.yaml` or create a `i18n_builder.yaml` file:
@@ -33,3 +33,4 @@ builders:
 ## Suggestions
 
 -   You can use the [BabelEdit](https://www.codeandweb.com/babeledit) to make easy translate your files.
+-   The builder preserves distinct keys that differ only by case, for example `Tank` and `tank`.

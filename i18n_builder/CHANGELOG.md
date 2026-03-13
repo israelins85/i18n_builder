@@ -1,3 +1,8 @@
+## 1.1.3
+
+- Fix base locale matching when updating translation values
+- Fix preserving distinct translation keys that differ only by letter case, such as `Tank` and `tank`
+
 ## 1.1.2
 
 - Adding possibility to run standalone to update translations
